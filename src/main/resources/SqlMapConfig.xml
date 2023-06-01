@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--
+    根标签是configuration
+-->
+<configuration>
+    <!--
+        使用properties标签引入外部的properties文件
+        目的：配置文件解耦，为了
+     -->
+    <properties resource="jdbc.properties"></properties>
+
+    <!--定义一个别名索引-->
+    <typeAliases>
+        <!--一个配置-->
+        <!--<typeAlias type="test.entity.User" alias="user"></typeAlias>-->
+        <!--整个包的配置-->
+        <package name="test.entity"/>
+    </typeAliases>
+    <!--
+        配置数据库的环境信息:
+        environments: 表示里面可以配置多个环境,default表示使用哪个环境
+            environment: 每一个environment表示一种环境
+        为什么要配置多个环境: 因为我们有多个环境(开发环境、生产环境(真正项目之后运行的环境)、测试环境)
+    -->
+    <environments default="test">
+        <!--开发环境-->
+        <environment id="dev">
+            <!--
+                事务管理者，type为JDBC表示使用JDBC的事务管理者(了解)
+            -->
+            <transactionManager type="JDBC"></transactionManager>
+            <!--
+                dataSource表示数据源，
+                1. POOLED表示使用自带连接池
+                2. UNPOOLED表示不使用连接池
+                3. JNDI表示使用JNDI的连接池
+            -->
+            <dataSource type="POOLED">
+                <!--连接池的配置信息-->
+                <property name="username" value="root"/>
+                <property name="password" value="root"/>
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql:///mybatis_day?characterEncoding=utf8"/>
+            </dataSource>
+        </environment>
+        <!--生产环境-->
+        <environment id="pro">
+            <transactionManager type=""></transactionManager>
+            <dataSource type=""></dataSource>
+        </environment>
+        <!--测试环境-->
+        <environment id="test">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${jdbc.driver}"/>
+                <property name="url" value="${jdbc.url}"/>
+                <property name="username" value="${jdbc.user}"/>
+                <property name="password" value="${jdbc.password}"/>
+            </dataSource>
+        </environment>
+
+    </environments>
+
+    <!--
+        指定加载哪些映射配置文件: mappers
+            mapper标签: 每一个mapper标签负责加载一个映射配置文件;resource指定要加载的映射配置文件的路径
+    -->
+    <mappers>
+        <!--导入一个配置-->
+        <!--<mapper resource="test/dao/UserDao.xml"></mapper>-->
+        <!--导入多个配置-->
+        <package name="test.dao"></package>
+    </mappers>
+</configuration>

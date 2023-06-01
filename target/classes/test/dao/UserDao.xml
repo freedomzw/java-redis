@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    根标签mapper，一个映射配置文件，就对应一个dao接口
+    根标签的namespace属性的值就对应dao接口的全限定名
+-->
+<mapper namespace="test.dao.UserDao">
+    <!--
+        根标签的每一个子标签就对应dao接口的每一个方法:
+            select标签就对应查询方法
+
+        标签的id的值对应方法的名字
+        标签的resultType的值就对应封装结果的类型，如果封装结果的类型是List就对应其泛型的类型
+        标签体的内容就是要执行的SQL语句
+        resultType="test.entity.User" 别名
+        resultType="user"
+    -->
+    <select id="findAll" resultType="User">
+        select *
+        from t_user
+    </select>
+
+    <insert id="addUser" parameterType="User">
+        insert into t_user(username, sex, birthday, address) values (#{name},#{sex},#{birthday},#{address})
+    </insert>
+</mapper>
